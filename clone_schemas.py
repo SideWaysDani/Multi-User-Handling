@@ -1,4 +1,9 @@
 import psycopg2
+import sys
+import os
+
+os.environ["PYTHONUNBUFFERED"] = "1"
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 1)  # Line buffered
 
 
 
