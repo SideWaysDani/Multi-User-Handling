@@ -18,3 +18,5 @@ steps:
   - script: |
       python clone_schemas.py
     displayName: 'Run Schema Cloner'
+    env:
+      PYTHONUNBUFFERED: 1
