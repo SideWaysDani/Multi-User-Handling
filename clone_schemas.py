@@ -17,6 +17,18 @@ USER_TABLE = 'user'
 def clone_schema(conn, user_id):
     new_schema = f"paper_trading_multi_{user_id}"
     with conn.cursor() as cur:
+        # Check if schema already exists
+        cur.execute("""
+            SELECT schema_name
+            FROM information_schema.schemata
+            WHERE schema_name = %s
+        """, (new_schema,))
+        exists = cur.fetchone()
+
+        if exists:
+            print(f"⚠️ Schema {new_schema} already exists for user {user_id}. Skipping.")
+            return
+
         # Create schema
         cur.execute(f'CREATE SCHEMA IF NOT EXISTS {new_schema}')
         print(f"Created schema {new_schema} for user {user_id}")
