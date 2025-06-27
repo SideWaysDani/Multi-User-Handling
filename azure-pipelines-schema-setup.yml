@@ -16,7 +16,7 @@ steps:
     displayName: 'Install Python Dependencies'
 
   - script: |
-      python clone_schemas.py
+      python clone_schemas.py | tee output.log
     displayName: 'Run Schema Cloner'
     env:
       PYTHONUNBUFFERED: 1
