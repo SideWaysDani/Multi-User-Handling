@@ -19,6 +19,9 @@ TEMPLATE_SCHEMA = 'paper_trading_multi_clean'
 MASTER_SCHEMA = 'master'
 USER_TABLE = 'user'
 
+def log(msg):
+    print(msg, flush=True)
+
 def clone_schema(conn, user_id):
     new_schema = f"paper_trading_multi_{user_id}"
     with conn.cursor() as cur:
@@ -31,12 +34,12 @@ def clone_schema(conn, user_id):
         exists = cur.fetchone()
 
         if exists:
-            print(f"⚠️ Schema {new_schema} already exists for user {user_id}. Skipping.")
+            log(f"⚠️ Schema {new_schema} already exists for user {user_id}. Skipping.")
             return
 
         # Create schema
         cur.execute(f'CREATE SCHEMA IF NOT EXISTS {new_schema}')
-        print(f"Created schema {new_schema} for user {user_id}")
+        log(f"Created schema {new_schema} for user {user_id}")
 
         # Clone tables from template schema
         cur.execute(f"""
@@ -53,7 +56,7 @@ def clone_schema(conn, user_id):
                 (LIKE {TEMPLATE_SCHEMA}.{table} INCLUDING ALL)
             """)
 
-            print(f"Created table {new_schema}.{table} with structure from {TEMPLATE_SCHEMA}.{table}")
+            log(f"Created table {new_schema}.{table} with structure from {TEMPLATE_SCHEMA}.{table}")
 
             # 2. Copy data from template
             cur.execute(f"""
@@ -61,7 +64,7 @@ def clone_schema(conn, user_id):
                 SELECT * FROM {TEMPLATE_SCHEMA}.{table}
             """)
 
-            print(f"Copied data to {new_schema}.{table} from {TEMPLATE_SCHEMA}.{table}")
+            log(f"Copied data to {new_schema}.{table} from {TEMPLATE_SCHEMA}.{table}")
 
         # Update user table
         cur.execute(f"""
@@ -69,7 +72,7 @@ def clone_schema(conn, user_id):
             SET schema_name = %s
             WHERE id = %s
         """, (new_schema, user_id))
-        print(f"Cloned schema for user {user_id} → {new_schema}")
+        log(f"Cloned schema for user {user_id} → {new_schema}")
 
     conn.commit()
 
