@@ -24,7 +24,7 @@ s3 = boto3.client(
 
 def get_users(conn):
     with conn.cursor() as cur:
-        cur.execute("SELECT id, alpaca_api_key, alpaca_secret_key, schema_name FROM master.user WHERE dag_name IS NULL")
+        cur.execute("SELECT id, alpaca_api_key, alpaca_secret_key, schema_name FROM master.user WHERE dag_name IS NULL and schema_name IS NOT NULL")
         return cur.fetchall()
 
 def update_dag_name(conn, user_id, dag_name):
