@@ -19,6 +19,10 @@ steps:
       versionSpec: '3.x'
 
   - script: |
+      echo "Triggered by: $(resources.pipeline.schemaCreationPipeline.sourceBranch)"
+    displayName: 'Debug Trigger Source'
+
+  - script: |
       pip install --upgrade pip
       pip install -r requirements.txt
     displayName: 'Install Python Dependencies'
