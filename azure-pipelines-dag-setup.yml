@@ -1,6 +1,15 @@
 # trigger:
 #   - main
 
+resources:
+  pipelines:
+    - pipeline: schemaCreationPipeline
+      source: 'SideWaysDani.Multi-User-Handling (SCHEMA CREATION)' 
+      trigger:
+        branches:
+          include:
+            - main
+
 pool:
   vmImage: 'ubuntu-latest'
 
