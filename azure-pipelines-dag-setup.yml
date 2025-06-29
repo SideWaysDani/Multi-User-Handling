@@ -4,7 +4,7 @@
 resources:
   pipelines:
     - pipeline: schemaCreationPipeline
-      source: 'SideWaysDani.Multi-User-Handling (SCHEMA CREATION)' 
+      source: 'SideWaysDani.Multi-User-Schema-Creation' 
       trigger:
         branches:
           include:
